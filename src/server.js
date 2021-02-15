@@ -11,12 +11,12 @@ const app = express();
 app.use(express.json());
  
 app.get('/health', (req, res) => {
-    const span = tracer.startSpan('op');
-    const ctx = span.context();
-    span.setAttribute('key', 'value');
+    //const span = tracer.startSpan('op');
+    //const ctx = span.context();
+    //span.setAttribute('key', 'value');
     
-    console.log('TraceId is : ' + ctx.traceId);
-    span.end();
+    //console.log('TraceId is : ' + ctx.traceId);
+    //span.end();
     return res.status(200).send({message: "Health is good"});
 });
  

@@ -10,11 +10,11 @@ const provider = new NodeTracerProvider ({
         express: {
           enabled: true,
           path: '@opentelemetry/plugin-express',
-        }
-    },
-    http: {
-        enabled: true,
-        path: '@opentelemetry/plugin-http',
+        },
+        http: {
+            enabled: true,
+            path: '@opentelemetry/plugin-http',
+        },
     },
     logLevel: LogLevel.ERROR,      
 });
