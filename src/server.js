@@ -1,3 +1,5 @@
+import tracing from './tracing';
+
 import opentelemetry from '@opentelemetry/api'
 import express from 'express';
 

@@ -1,3 +1,4 @@
+import opentelemetry from '@opentelemetry/api'
 import {LogLevel} from '@opentelemetry/core'
 import {NodeTracerProvider} from '@opentelemetry/node'
 import {registerInstrumentations} from '@opentelemetry/instrumentation'
@@ -11,25 +12,16 @@ const provider = new NodeTracerProvider ({
           path: '@opentelemetry/plugin-express',
         }
     },
-    logLevel: LogLevel.ERROR      
+    http: {
+        enabled: true,
+        path: '@opentelemetry/plugin-http',
+    },
+    logLevel: LogLevel.ERROR,      
 });
 
 registerInstrumentations({
     tracerProvider: provider
 });
-
-/**
- * Registering the provider with the API allows it to be discovered
- * and used by instrumentation libraries. The OpenTelemetry API provides
- * methods to set global SDK implementations, but the default SDK provides
- * a convenience method named `register` which registers same defaults
- * for you.
- *
- * By default the NodeTracerProvider uses Trace Context for propagation
- * and AsyncHooksScopeManager for context management. To learn about
- * customizing this behavior, see API Registration Options below.
- */
-provider.register();
 
 provider.addSpanProcessor(new SimpleSpanProcessor(new ConsoleSpanExporter()));
 
@@ -51,5 +43,24 @@ const options = {
  */
 provider.addSpanProcessor(new BatchSpanProcessor(new JaegerExporter(options)));
 
+/**
+ * Registering the provider with the API allows it to be discovered
+ * and used by instrumentation libraries. The OpenTelemetry API provides
+ * methods to set global SDK implementations, but the default SDK provides
+ * a convenience method named `register` which registers same defaults
+ * for you.
+ *
+ * By default the NodeTracerProvider uses Trace Context for propagation
+ * and AsyncHooksScopeManager for context management. To learn about
+ * customizing this behavior, see API Registration Options below.
+ */
+// Initialize the OpenTelemetry APIs to use the NodeTracerProvider bindings
+provider.register();
+
 console.log("tracing initialized");
+
+
+const tracer =  opentelemetry.trace.getTracer('nodejs-opentelemetry-tempo');
+
+
 
