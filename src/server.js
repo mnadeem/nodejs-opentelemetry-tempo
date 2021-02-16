@@ -1,5 +1,6 @@
 import { tracer } from './tracing';
-import { register, measureRequestDuration } from './monitoring'
+import { register, measureRequestDuration } from './monitoring';
+import { context, getSpan, getSpanContext} from '@opentelemetry/api';
 
 import cors from 'cors'
 import opentelemetry from '@opentelemetry/api'
@@ -32,12 +33,14 @@ app.get('/metrics', async (req, res) => {
 });
 
 app.get('/health', (req, res) => {
-    //const span = tracer.startSpan('op');
-    //const ctx = span.context();
-    //span.setAttribute('key', 'value');
+    
+    //const span = getSpan(opentelemetry.context.active());
+    //console.log(span.context().traceId);
 
-    //console.log('TraceId is : ' + ctx.traceId);
-    //span.end();
+    const spanContext = getSpanContext(opentelemetry.context.active());
+
+    console.log("TraceId : " + spanContext.traceId);
+
     return res.status(200).send({ message: "Health is good" });
 });
 

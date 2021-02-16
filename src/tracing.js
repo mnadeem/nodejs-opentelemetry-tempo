@@ -5,6 +5,7 @@ import {registerInstrumentations} from '@opentelemetry/instrumentation'
 import {JaegerExporter} from '@opentelemetry/exporter-jaeger'
 import {SimpleSpanProcessor, BatchSpanProcessor, ConsoleSpanExporter} from '@opentelemetry/tracing'
 
+// Enable OpenTelemetry exporters to export traces to Grafan Tempo.
 const provider = new NodeTracerProvider ({
     plugins: {
         express: {
@@ -23,8 +24,7 @@ registerInstrumentations({
     tracerProvider: provider
 });
 
-provider.addSpanProcessor(new BatchSpanProcessor(new ConsoleSpanExporter()));
-
+// Initialize the exporter. 
 const options = {
     serviceName: 'nodejs-opentelemetry-tempo',
     tags: [], // optional
@@ -38,11 +38,14 @@ const options = {
 }
 
 /**
+ * 
+ * Configure the span processor to send spans to the exporter
  * The SimpleSpanProcessor does no batching and exports spans
  * immediately when they end. For most production use cases,
  * OpenTelemetry recommends use of the BatchSpanProcessor.
  */
-provider.addSpanProcessor(new SimpleSpanProcessor(new JaegerExporter(options)));
+provider.addSpanProcessor(new BatchSpanProcessor(new JaegerExporter(options)));
+//provider.addSpanProcessor(new SimpleSpanProcessor(new ConsoleSpanExporter()));
 
 /**
  * Registering the provider with the API allows it to be discovered
