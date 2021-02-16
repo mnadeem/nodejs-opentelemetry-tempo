@@ -13,6 +13,8 @@ services:
       - "14250"  # Jaeger - GRPC
       - "55680"  # OpenTelemetry
       - "3100"   # tempo
+      - "6831"   # Jaeger - Thrift Compact
+      - "6832"   # Jaeger - Thrift Binary	
 
   tempo-query:
     image: grafana/tempo-query:latest
