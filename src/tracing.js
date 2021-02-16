@@ -68,4 +68,4 @@ provider.register();
 
 export const tracer = opentelemetry.trace.getTracer(process.env.OTEL_SERVICE_NAME);
 
-logger.debug("tracing initialized");
+logger.debug("tracing initialized for %s sending span to %s", options.serviceName, options.endpoint);

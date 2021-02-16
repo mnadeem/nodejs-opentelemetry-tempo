@@ -11,16 +11,16 @@ target_config:
    sync_period: 10s
 
 scrape_configs:
-  - job_name: boot-otel-tempo-api
+  - job_name: nodejs-otel-tempo-api
     static_configs:
       - targets:
           - localhost
         labels:
-          job: boot-otel-tempo-api
-          __path__: /app/logs/boot-otel-tempo-api*.log
+          job: nodejs-otel-tempo-api
+          __path__: /app/logs/nodejs-otel-tempo-api*.log
     pipeline_stages:
       - match:
-          selector: '{job="boot-otel-tempo-api"}'
+          selector: '{job="nodejs-otel-tempo-api"}'
           stages:
           - regex:
               expression: '^(?P<timestamp>\d{4}-\d{2}-\d{2}\s\d{1,2}\:\d{2}\:\d{2}\.\d{3})\s+(?P<level>[A-Z]{4,5})\s[(?P<serviceName>.*),(?P<traceId>.*),(?P<spanId>.*)]\s(?P<pid>\d)\s---\s[\s*(?P<thread>.*)]\s(?P<logger>.*)\s+\:\s(?P<message>.*)$'
@@ -41,33 +41,4 @@ scrape_configs:
       - multiline:
           firstline: '^\d{4}-\d{2}-\d{2}\s\d{1,2}\:\d{2}\:\d{2}\.\d{3}'
           max_wait_time: 3s
-  - job_name: boot-otel-tempo-provider1
-    static_configs:
-      - targets:
-          - localhost
-        labels:
-          job: boot-otel-tempo-provider1
-          __path__: /app/logs/boot-otel-tempo-provider1*.log
-    pipeline_stages:
-      - match:
-          selector: '{job="boot-otel-tempo-provider1"}'
-          stages:
-          - regex:
-              expression: '^(?P<timestamp>\d{4}-\d{2}-\d{2}\s\d{1,2}\:\d{2}\:\d{2}\.\d{3})\s+(?P<level>[A-Z]{4,5})\s[(?P<serviceName>.*),(?P<traceId>.*),(?P<spanId>.*)]\s(?P<pid>\d)\s---\s[\s*(?P<thread>.*)]\s(?P<logger>.*)\s+\:\s(?P<message>.*)$'
-          - labels:
-              timestamp:
-              level:
-              serviceName:
-              traceId:
-              spanId:
-              pid:
-              thread:
-              logger:
-              message:
-          - timestamp:
-              format: '2006-01-02 15:04:05.000'
-              source: timestamp
-      # https://grafana.com/docs/loki/latest/clients/promtail/stages/multiline/
-      - multiline:
-          firstline: '^\d{4}-\d{2}-\d{2}\s\d{1,2}\:\d{2}\:\d{2}\.\d{3}'
-          max_wait_time: 3s
+ 
