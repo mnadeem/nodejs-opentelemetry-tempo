@@ -37,3 +37,8 @@ sonar-project.properties
 debug.log
 
 package-lock.json
+
+# App
+/data/tempo-data/
+/data/loki-data/
+/data/logs/

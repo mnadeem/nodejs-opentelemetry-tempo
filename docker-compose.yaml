@@ -1,0 +1,91 @@
+version: "3.8"
+
+services:
+
+  tempo:
+    image: grafana/tempo:latest
+    command: ["-config.file=/etc/tempo.yaml"]
+    volumes:
+      - ./etc/tempo-local.yaml:/etc/tempo.yaml
+      - ./data/tempo-data:/tmp/tempo
+    ports:
+      - "14268"  # jaeger ingest, Jaeger - Thrift HTTP
+      - "14250"  # Jaeger - GRPC
+      - "55680"  # OpenTelemetry
+      - "3100"   # tempo
+
+  tempo-query:
+    image: grafana/tempo-query:latest
+    command: ["--grpc-storage-plugin.configuration-file=/etc/tempo-query.yaml"]
+    volumes:
+      - ./etc/tempo-query.yaml:/etc/tempo-query.yaml
+    ports:
+      - "16686:16686"  # jaeger-ui
+    depends_on:
+      - tempo
+
+  loki:
+    image: grafana/loki:2.1.0
+    command: -config.file=/etc/loki/loki-local.yaml
+    ports:
+      - "3101:3100"                                   # loki needs to be exposed so it receives logs
+    environment:
+      - JAEGER_AGENT_HOST=tempo
+      - JAEGER_ENDPOINT=http://tempo:14268/api/traces # send traces to Tempo
+      - JAEGER_SAMPLER_TYPE=const
+      - JAEGER_SAMPLER_PARAM=1
+    volumes:
+      - ./etc/loki-local.yaml:/etc/loki/loki-local.yaml
+      - ./data/loki-data:/tmp/loki
+
+  nodejs-otel-tempo-api:
+    build: .
+    ports:
+      - "5555:5555"
+    environment:
+      - OTEL_EXPORTER_JAEGER_ENDPOINT=http://tempo:14268/api/traces
+      - OTEL_SERVICE_NAME=nodejs-opentelemetry-tempo
+      - LOG_FILE_NAME=/app/logs/nodejs-opentelemetry-tempo.log
+    volumes:
+      - ./data/logs:/app/logs
+    depends_on:
+      - tempo-query
+
+  promtail:
+    image: grafana/promtail:master-ee9c629
+    command: -config.file=/etc/promtail/promtail-local.yaml
+    volumes:
+      - ./etc/promtail-local.yaml:/etc/promtail/promtail-local.yaml
+      - ./data/logs:/app/logs
+    depends_on:
+      - nodejs-otel-tempo-api
+      - loki
+
+  prometheus:
+    image: prom/prometheus:latest
+    volumes:
+      - ./etc/prometheus.yaml:/etc/prometheus.yaml
+    entrypoint:
+      - /bin/prometheus
+      - --config.file=/etc/prometheus.yaml
+    ports:
+      - "9090:9090"
+    depends_on:
+      - nodejs-otel-tempo-api
+
+  grafana:
+    image: grafana/grafana:7.4.0-ubuntu
+    volumes:
+      - ./data/grafana-data/datasources:/etc/grafana/provisioning/datasources
+      - ./data/grafana-data/dashboards-provisioning:/etc/grafana/provisioning/dashboards
+      - ./data/grafana-data/dashboards:/var/lib/grafana/dashboards
+    environment:
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      - GF_AUTH_DISABLE_LOGIN_FORM=true
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+      - tempo-query
+      - loki

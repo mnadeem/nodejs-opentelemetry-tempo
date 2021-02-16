@@ -6,9 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "rimraf ./dist/",
-    "build": "babel ./src/ --presets=babel-preset-env --out-dir dist --ignore ./node_modules,./.babelrc,./package.json,./npm-debug.log --copy-files",
-    "server:dev": "nodemon -r ./src/server.js ./src/tracing.js --exec babel-node --presets babel-preset-env",
-    "server:prod": "node ./dist/tracing.js ./dist/server.js",
+    "build": "babel ./src/ --presets=@babel/preset-env --plugins=@babel/transform-runtime --out-dir dist --ignore ./node_modules,./.babelrc,./package.json,./npm-debug.log --copy-files",
+    "server:dev": "nodemon -r ./src/server.js ./src/tracing.js --exec babel-node --presets @babel/preset-env",
+    "server:prod": "node -r ./dist/server.js ./dist/tracing.js",
     "prod:build": "npm-run-all clean build",
     "prod": "npm-run-all clean prod:build server:prod",
     "dev": "npm-run-all server:dev"
@@ -17,6 +17,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@babel/runtime": "^7.12.13",
     "@opentelemetry/api": "^0.15.0",
     "@opentelemetry/core": "^0.15.0",
     "@opentelemetry/exporter-jaeger": "^0.15.0",
@@ -33,8 +34,11 @@
     "prom-client": "^13.1.0"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
+    "@babel/cli": "^7.12.16",
+    "@babel/core": "^7.12.16",
+    "@babel/node": "^7.12.16",
+    "@babel/plugin-transform-runtime": "^7.12.15",
+    "@babel/preset-env": "^7.12.16",
     "nodemon": "^2.0.7",
     "npm-run-all": "^4.1.5",
     "rimraf": "^3.0.2"
