@@ -63,4 +63,4 @@ provider.register();
 
 console.log("tracing initialized");
 
-export const tracer = opentelemetry.trace.getTracer('nodejs-opentelemetry-tempo');
+export const tracer = opentelemetry.trace.getTracer(process.env.OTEL_SERVICE_NAME);
