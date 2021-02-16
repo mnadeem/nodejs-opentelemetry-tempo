@@ -16,7 +16,7 @@ const requestDuration = new Histogram({
 register.registerMetric(requestDuration)
 
 export const measureRequestDuration = (req, res, next) => {
-    const start = Date.now();
+   const start = Date.now();
    res.once('finish', () => {
     const duration = Date.now() - start;
     requestDuration.labels(req.url, req.method, res.statusCode).observe(duration)

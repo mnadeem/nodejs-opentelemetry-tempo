@@ -33,7 +33,7 @@ const options = {
     //port: 6832, // optional
     // OR you can use the HTTPSender as follows
     //14250 : model.proto not working 
-    endpoint: 'http://localhost:14268/api/traces',
+    endpoint: process.env.OTEL_EXPORTER_JAEGER_ENDPOINT,
     maxPacketSize: 65000 // optional
 }
 

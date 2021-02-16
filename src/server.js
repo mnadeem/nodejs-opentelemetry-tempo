@@ -1,3 +1,4 @@
+import {env} from './env';
 import {addCorsHeaders } from './cors'
 import { tracer } from './tracing';
 import { measureRequestDuration, registerPromMetrics } from './monitoring';
