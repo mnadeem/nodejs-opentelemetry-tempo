@@ -11,16 +11,16 @@ target_config:
    sync_period: 10s
 
 scrape_configs:
-  - job_name: nodejs-otel-tempo-api
+  - job_name: nodejs-opentelemetry-tempo
     static_configs:
       - targets:
           - localhost
         labels:
-          job: nodejs-otel-tempo-api
-          __path__: /app/logs/nodejs-otel-tempo-api*.log
+          job: nodejs-opentelemetry-tempo
+          __path__: /app/logs/nodejs-opentelemetry-tempo*.log
     pipeline_stages:
       - match:
-          selector: '{job="nodejs-otel-tempo-api"}'
+          selector: '{job="nodejs-opentelemetry-tempo"}'
           stages:
           - regex:
               expression: '^(?P<timestamp>\d{4}-\d{2}-\d{2}\s\d{1,2}\:\d{2}\:\d{2}\.\d{3})\s+(?P<level>[A-Z]{4,5})\s[(?P<serviceName>.*),(?P<traceId>.*),(?P<spanId>.*)]\s(?P<pid>\d)\s---\s[\s*(?P<thread>.*)]\s(?P<logger>.*)\s+\:\s(?P<message>.*)$'

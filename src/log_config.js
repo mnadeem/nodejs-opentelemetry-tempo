@@ -5,7 +5,7 @@ log4js.configure(
       appenders: {
         file: {
           type: 'file',
-          filename: process.env.OTEL_SERVICE_NAME,
+          filename: process.env.LOG_FILE_NAME,
           //pattern: 'yyyy-MM-dd-hh',
           maxLogSize: 10 * 1024 * 1024, // = 10Mb
           backups: 5, // keep five backup files
