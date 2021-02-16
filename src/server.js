@@ -1,4 +1,5 @@
 import env from './env';
+import logConfig from './log_config';
 import log4js from 'log4js';
 import {addCorsHeaders } from './cors'
 import { tracer } from './tracing';

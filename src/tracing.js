@@ -31,7 +31,7 @@ registerInstrumentations({
 
 // Initialize the exporter. 
 const options = {
-    serviceName: 'nodejs-opentelemetry-tempo',
+    serviceName: process.env.OTEL_SERVICE_NAME,
     tags: [], // optional
     // You can use the default UDPSender
     //host: 'localhost', // optional
