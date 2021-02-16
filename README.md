@@ -1,4 +1,4 @@
-# Project Demonstrating Distribute Tracing For NodeJs Applications
+# Project Demonstrating Observability For NodeJs Applications
 
 This is a demo project to demonstrate how we can integrate the following
 
@@ -31,7 +31,6 @@ View the log and trace in grafana
 Get the trace information Using Jaeger
 
 ![](docs/images/jaeger-tracing.png)
-
 
 View the metrics in prometheus
 
