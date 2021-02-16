@@ -6,7 +6,6 @@ import {registerInstrumentations} from '@opentelemetry/instrumentation'
 import {JaegerExporter} from '@opentelemetry/exporter-jaeger'
 import {SimpleSpanProcessor, BatchSpanProcessor, ConsoleSpanExporter} from '@opentelemetry/tracing'
 
-
 const logger = log4js.getLogger("tracing");
 logger.level = "debug";
 

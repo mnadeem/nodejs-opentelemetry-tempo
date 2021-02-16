@@ -9,13 +9,12 @@ services:
       - ./etc/tempo-local.yaml:/etc/tempo.yaml
       - ./data/tempo-data:/tmp/tempo
     ports:
-      - "14268"  # jaeger ingest, Jaeger - Thrift HTTP
-      - "14250"  # Jaeger - GRPC
-      - "55680"  # OpenTelemetry
-      - "3100"   # tempo
+      - "14268"      # jaeger ingest, Jaeger - Thrift HTTP
+      - "14250"      # Jaeger - GRPC
+      - "55680"      # OpenTelemetry
+      - "3100"       # tempo
       - "6831/udp"   # Jaeger - Thrift Compact
       - "6832/udp"   # Jaeger - Thrift Binary	
-
 
   tempo-query:
     image: grafana/tempo-query:latest
