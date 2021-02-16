@@ -23,14 +23,14 @@ registerInstrumentations({
     tracerProvider: provider
 });
 
-provider.addSpanProcessor(new SimpleSpanProcessor(new ConsoleSpanExporter()));
+provider.addSpanProcessor(new BatchSpanProcessor(new ConsoleSpanExporter()));
 
 const options = {
     serviceName: 'nodejs-opentelemetry-tempo',
     tags: [], // optional
     // You can use the default UDPSender
     host: 'localhost', // optional
-    port: 14250, // optional
+    port: 6832, // optional
     // OR you can use the HTTPSender as follows
     // endpoint: 'http://localhost:14268/api/traces',
     maxPacketSize: 65000 // optional
@@ -41,7 +41,7 @@ const options = {
  * immediately when they end. For most production use cases,
  * OpenTelemetry recommends use of the BatchSpanProcessor.
  */
-provider.addSpanProcessor(new BatchSpanProcessor(new JaegerExporter(options)));
+provider.addSpanProcessor(new SimpleSpanProcessor(new JaegerExporter(options)));
 
 /**
  * Registering the provider with the API allows it to be discovered
@@ -59,8 +59,4 @@ provider.register();
 
 console.log("tracing initialized");
 
-
-const tracer =  opentelemetry.trace.getTracer('nodejs-opentelemetry-tempo');
-
-
-
+export const tracer = opentelemetry.trace.getTracer('nodejs-opentelemetry-tempo');
