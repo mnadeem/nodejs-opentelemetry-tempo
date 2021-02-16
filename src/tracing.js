@@ -29,10 +29,11 @@ const options = {
     serviceName: 'nodejs-opentelemetry-tempo',
     tags: [], // optional
     // You can use the default UDPSender
-    host: 'localhost', // optional
-    port: 6832, // optional
+    //host: 'localhost', // optional
+    //port: 6832, // optional
     // OR you can use the HTTPSender as follows
-    // endpoint: 'http://localhost:14268/api/traces',
+    //14250 : model.proto not working 
+    endpoint: 'http://localhost:14268/api/traces',
     maxPacketSize: 65000 // optional
 }
 
