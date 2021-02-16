@@ -1,4 +1,8 @@
+import log4js from 'log4js';
 import promClient from 'prom-client';
+
+const logger = log4js.getLogger("monitoring");
+logger.level = "debug";
 
 // Create a Registry which registers the metrics
 const register = new promClient.Registry()
@@ -33,3 +37,5 @@ export const registerPromMetrics  = async (req, res) => {
         res.status(500).end(ex);
     }
 }
+
+logger.debug("Monitoring initialized");

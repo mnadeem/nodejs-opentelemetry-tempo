@@ -1,4 +1,5 @@
 import env from './env';
+import log4js from 'log4js';
 import {addCorsHeaders } from './cors'
 import { tracer } from './tracing';
 import { measureRequestDuration, registerPromMetrics } from './monitoring';
@@ -7,6 +8,9 @@ import { context, getSpan, getSpanContext } from '@opentelemetry/api';
 import cors from 'cors'
 import opentelemetry from '@opentelemetry/api'
 import express from 'express';
+
+const logger = log4js.getLogger("server");
+logger.level = "debug";
 
 const PORT = process.env.PORT || 5555;
 
@@ -52,7 +56,7 @@ const doSomeWorkInNewNestedSpan = (parentSpan) => {
 }
 
 app.listen(PORT, () => {
-    console.log('App is listening for requests on port %d', PORT);
+    logger.debug('App is listening for requests on port %d', PORT);
 });
 
-console.log("Server initialized");
+logger.debug("Server initialized");

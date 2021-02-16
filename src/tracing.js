@@ -1,9 +1,14 @@
+import log4js from 'log4js';
 import opentelemetry from '@opentelemetry/api'
 import {LogLevel} from '@opentelemetry/core'
 import {NodeTracerProvider} from '@opentelemetry/node'
 import {registerInstrumentations} from '@opentelemetry/instrumentation'
 import {JaegerExporter} from '@opentelemetry/exporter-jaeger'
 import {SimpleSpanProcessor, BatchSpanProcessor, ConsoleSpanExporter} from '@opentelemetry/tracing'
+
+
+const logger = log4js.getLogger("tracing");
+logger.level = "debug";
 
 // Enable OpenTelemetry exporters to export traces to Grafan Tempo.
 const provider = new NodeTracerProvider ({
@@ -61,6 +66,6 @@ provider.addSpanProcessor(new BatchSpanProcessor(new JaegerExporter(options)));
 // Initialize the OpenTelemetry APIs to use the NodeTracerProvider bindings
 provider.register();
 
-console.log("tracing initialized");
-
 export const tracer = opentelemetry.trace.getTracer(process.env.OTEL_SERVICE_NAME);
+
+logger.debug("tracing initialized");
