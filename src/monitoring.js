@@ -1,7 +1,7 @@
 import promClient from 'prom-client';
 
 // Create a Registry which registers the metrics
-export const register = new promClient.Registry()
+const register = new promClient.Registry()
 promClient.collectDefaultMetrics({ register });
 
 const Histogram = promClient.Histogram;
@@ -24,3 +24,12 @@ export const measureRequestDuration = (req, res, next) => {
  
   next();
 };
+
+export const registerPromMetrics  = async (req, res) => {
+    try {
+        res.set('Content-Type', register.contentType);
+        res.end(await register.metrics());
+    } catch (ex) {
+        res.status(500).end(ex);
+    }
+}
