@@ -35,3 +35,7 @@ Get the trace information Using Jaeger
 View the metrics in prometheus
 
 ![](docs/images/prometheus-metrics.png)
+
+View prometheus metrics in Grafana
+
+![](docs/images/grafana-prometheus.png)

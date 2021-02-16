@@ -4,10 +4,9 @@ import log4js from 'log4js';
 import {addCorsHeaders } from './cors'
 import { tracer } from './tracing';
 import { measureRequestDuration, registerPromMetrics } from './monitoring';
-import { context, getSpan, getSpanContext } from '@opentelemetry/api';
+import opentelemetry, { context, getSpan, getSpanContext } from '@opentelemetry/api';
 
 import cors from 'cors'
-import opentelemetry from '@opentelemetry/api'
 import express from 'express';
 
 const logger = log4js.getLogger("server");
