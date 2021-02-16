@@ -26,7 +26,7 @@ app.get('/metrics', registerPromMetrics);
 app.get('/health', (req, res) => {
     const spanContext = getSpanContext(opentelemetry.context.active());
 
-    console.log("TraceId : " + spanContext.traceId);
+    logger.debug("TraceId : %s", spanContext.traceId);
     const parentSpan = getSpan(opentelemetry.context.active());
     doSomeWorkInNewSpan(parentSpan);
 
