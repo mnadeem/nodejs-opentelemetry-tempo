@@ -1,5 +1,4 @@
 import dotenv from 'dotenv';
-import log4js from 'log4js';
 
 const result = dotenv.config()
 
