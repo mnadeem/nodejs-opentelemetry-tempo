@@ -53,11 +53,10 @@ View prometheus metrics in Grafana
 
 ## In Command prompt
 
-Create **.env** in root folder
+Create **.env** file in root folder, refer [this](https://github.com/open-telemetry/opentelemetry-js/blob/v0.16.0/packages/opentelemetry-exporter-jaeger/src/jaeger.ts) for more details on environment variables.
 
 ````
 LOG_FILE_NAME=nodejs-opentelemetry-tempo.log
-##https://github.com/open-telemetry/opentelemetry-js/blob/v0.16.0/packages/opentelemetry-exporter-jaeger/src/jaeger.ts
 OTEL_SERVICE_NAME=nodejs-opentelemetry-tempo
 OTEL_EXPORTER_JAEGER_ENDPOINT=http://localhost:14250/api/traces
 ````
