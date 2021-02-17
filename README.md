@@ -39,3 +39,7 @@ View the metrics in prometheus
 View prometheus metrics in Grafana
 
 ![](docs/images/grafana-prometheus.png)
+
+# Also See
+
+* [Java Opentelemetry Tempo](https://github.com/mnadeem/boot-opentelemetry-tempo)
