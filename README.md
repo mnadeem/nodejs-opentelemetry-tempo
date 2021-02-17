@@ -29,24 +29,24 @@ docker-compose up --build
 
 Access the endpoint
 
-![](docs/images/access-endpoint.png)
+![](docs/img/access-endpoint.png)
 
 View the log and trace in grafana
 
-![](docs/images/logging-tracing.png)
+![](docs/img/logging-tracing.png)
 
 
 Get the trace information Using Jaeger
 
-![](docs/images/jaeger-tracing.png)
+![](docs/img/jaeger-tracing.png)
 
 View the metrics in prometheus
 
-![](docs/images/prometheus-metrics.png)
+![](docs/img/prometheus-metrics.png)
 
 View prometheus metrics in Grafana
 
-![](docs/images/grafana-prometheus.png)
+![](docs/img/grafana-prometheus.png)
 
 # Also See
 
