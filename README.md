@@ -1,17 +1,25 @@
 # Project Demonstrating Observability For NodeJs Applications
 
-This is a demo project to demonstrate how we can integrate the following
-
-* [Opentelemetry](https://opentelemetry.io/)
-* [Grafan Tempo](https://grafana.com/oss/tempo/) Which internally uses [Jaeger](https://www.jaegertracing.io/)
-* [NodeJs Application](https://nodejs.org/en/)
-
-It basically integrates The following
+This is a project demonstrating Observability using :
 
 * [Prometheus](https://prometheus.io/) for monitoring and alerting
 * [Loki](https://grafana.com/oss/loki/) for Distributed Logging
 * [Tempo](https://grafana.com/oss/tempo/) for Distributed Tracing
 * [Grafan](https://grafana.com/) for visualization
+
+And basically integrates the following
+
+* [Opentelemetry](https://opentelemetry.io/)
+* [Grafan Tempo](https://grafana.com/oss/tempo/) Which internally uses [Jaeger](https://www.jaegertracing.io/)
+* [NodeJs Application](https://nodejs.org/en/)
+
+And basically it demonstrate the best practices for :
+
+* Logging : Using Log4js
+* ES6 : Using Babel
+* Metrics : Using Promclient
+* Seperating configuration
+* Containerization 
 
 # Running
 
