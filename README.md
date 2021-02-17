@@ -23,6 +23,8 @@ And basically it demonstrate the best practices for :
 
 # Running
 
+## In Docker
+
 ````bash
 docker-compose up --build
 ````
@@ -47,6 +49,26 @@ View the metrics in prometheus
 View prometheus metrics in Grafana
 
 ![](docs/img/grafana-prometheus.png)
+
+
+## In Command prompt
+
+Create **.env** in root folder
+
+````
+LOG_FILE_NAME=nodejs-opentelemetry-tempo.log
+##https://github.com/open-telemetry/opentelemetry-js/blob/v0.16.0/packages/opentelemetry-exporter-jaeger/src/jaeger.ts
+OTEL_SERVICE_NAME=nodejs-opentelemetry-tempo
+OTEL_EXPORTER_JAEGER_ENDPOINT=http://localhost:14250/api/traces
+````
+
+````bash
+npm install
+````
+
+````bash
+npm run dev
+````
 
 # Also See
 
