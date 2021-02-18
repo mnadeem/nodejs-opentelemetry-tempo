@@ -22,10 +22,10 @@ log4js.configure(
         type: 'console',
         layout: {   // https://github.com/log4js-node/log4js-node/blob/master/docs/layouts.md
           type: 'pattern',
-          pattern: '%[%d %h %z %f:%l %p %c -%] %m %s',
+          pattern: '%[%d %h %z %x{traceId} %f:%l %p %c -%] %m %s',
           tokens: {
             //pid: function () {return process.pid; },
-            user: function(logEvent) {
+            traceId: function(logEvent) {
               return 'xyz';
             }
           }
