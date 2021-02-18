@@ -4,9 +4,7 @@ import log4js from 'log4js';
 import {addCorsHeaders } from './cors'
 import { tracer, addTraceId} from './tracing';
 import { measureRequestDuration, registerPromMetrics } from './monitoring';
-
 import { context, setSpan, getSpan } from '@opentelemetry/api';
-
 import cors from 'cors'
 import express from 'express';
 
@@ -18,7 +16,6 @@ const PORT = process.env.PORT || 5555;
 const app = express();
 
 app.use(connectLogger(logger));
-
 app.use(express.json());
 app.use(cors());
 app.use(addCorsHeaders);
