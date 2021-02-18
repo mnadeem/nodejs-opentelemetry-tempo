@@ -101,3 +101,13 @@ Get the trace information in [Jaeger](http://localhost:16686/search)
 # Also See
 
 * [Java Opentelemetry Tempo](https://github.com/mnadeem/boot-opentelemetry-tempo)
+
+# References
+
+* [Opentelemetry Specification](https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/overview.md)
+* [Opentelemetry NodeJs Getting Started](https://opentelemetry.io/docs/js/getting_started/nodejs/)
+* [Opentelemetry NodeJs Getting Started On Github](https://github.com/open-telemetry/opentelemetry-js/blob/main/getting-started/README.md)
+* [Opentelemetry NodeJs Packages](https://github.com/open-telemetry/opentelemetry-js/tree/main/packages)
+* [Opentelemetry Js Examples](https://github.com/open-telemetry/opentelemetry-js/tree/main/examples)
+* [Opentelemetry Js Contrib Examples](https://github.com/open-telemetry/opentelemetry-js-contrib/tree/main/examples)
+* [Opentelemetry Js Jaeger Exporter](https://github.com/open-telemetry/opentelemetry-js/tree/v0.16.0/packages/opentelemetry-exporter-jaeger)
