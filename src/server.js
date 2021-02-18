@@ -9,7 +9,7 @@ import cors from 'cors'
 import express from 'express';
 
 const logger = log4js.getLogger("server");
-logger.level = "debug";
+logger.level = "trace";
 
 const PORT = process.env.PORT || 5555;
 
@@ -63,17 +63,58 @@ const doSomeWorkInNewNestedSpan = (parentSpan) => {
 
 const doSomeWorkInNewNested2Span = () => {
     const childSpan = tracer.startSpan('doSomeWorkInNewNested2Span');
-    
+
     logger.info('doSomeWorkInNewNested2Span  traceId %s:%s', childSpan.context().traceId, childSpan.context().spanId);
 
+    Promise.all([asyncWorkOne(childSpan), asyncWorkTwo(childSpan)])
+            .then(results => logger.trace(results)); 
+
     childSpan.end();
+}
+
+function asyncWorkOne(parentSpan) {
+    const ctx = setSpan(context.active(), parentSpan);   
+    const childSpan = tracer.startSpan('asyncWorkOne', {
+        attributes: { 'code.function' : 'asyncWorkOne' }
+    }, ctx);
+
+    let promise = new Promise((resolve, reject) => {
+        try {
+            doSomeHeavyWork();
+            resolve("promise 1 done!")
+            childSpan.end();
+        } catch (e) {
+            reject(e);
+            childSpan.end();
+        }
+    });
+    return promise;
+}
+
+function asyncWorkTwo(parentSpan) {
+    const ctx = setSpan(context.active(), parentSpan);   
+    const childSpan = tracer.startSpan('asyncWorkTwo', {
+        attributes: { 'code.function' : 'asyncWorkTwo' }
+    }, ctx);
+
+    let promise = new Promise((resolve, reject) => {
+        try {
+            doSomeHeavyWork();
+            resolve("promise 2 done!");
+            childSpan.end();
+        } catch (e) {
+            reject(e);
+            childSpan.end();
+        }
+    });
+    return promise;
 }
 
 const doSomeHeavyWork = () => {
     for (let i = 0; i <= Math.floor(Math.random() * 40000000); i += 1) {
         // empty
     }
-} 
+}
 
 app.listen(PORT, () => {
     logger.debug('App is listening for requests on port %d', PORT);
