@@ -15,6 +15,7 @@ And basically integrates the following
 
 And basically it demonstrate the best practices for :
 
+* Demonstrate how to use Opentelemetry API
 * Logging : Using Log4js
 * ES6 : Using Babel
 * Metrics : Using Promclient
