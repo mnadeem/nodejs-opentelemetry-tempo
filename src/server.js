@@ -50,7 +50,7 @@ const doSomeWorkInNewNestedSpan = (parentSpan) => {
     const childSpan = tracer.startSpan('doSomeWorkInNewNestedSpan', {
         parentSpan, attributes: { 'code.function' : 'doSomeWorkInNewNestedSpan' }
     });
-    childSpan.setAttribute('code.filepath', "test");
+    childSpan.setAttribute('code.filepath', "test2");
     //Do some work
     doSomeHeavyWork();
     childSpan.end();
