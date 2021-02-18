@@ -29,7 +29,7 @@ And basically it demonstrate the best practices for :
 docker-compose up --build
 ````
 
-Access the endpoint
+Access the [endpoint](http://localhost:5555/health)
 
 ![](docs/img/access-endpoint.png)
 
@@ -38,7 +38,7 @@ View the log and trace in grafana
 ![](docs/img/logging-tracing.png)
 
 
-Get the trace information Using Jaeger
+Get the trace information Using [Jaeger](http://localhost:16686/search)
 
 ![](docs/img/jaeger-tracing.png)
 
@@ -89,11 +89,11 @@ npm install
 npm run dev
 ````
 
-Access the endpoint
+Access the [endpoint](http://localhost:5555/health)
 
 ![](docs/img/access-endpoint.png)
 
-Get the trace information in Jaeger
+Get the trace information in [Jaeger](http://localhost:16686/search)
 
 ![](docs/img/jaeger-tracing.png)
 
