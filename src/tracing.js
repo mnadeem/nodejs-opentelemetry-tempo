@@ -1,5 +1,5 @@
 import log4js from 'log4js';
-import opentelemetry from '@opentelemetry/api'
+import opentelemetry, { context, getSpan, getSpanContext } from '@opentelemetry/api';
 import {LogLevel} from '@opentelemetry/core'
 import {NodeTracerProvider} from '@opentelemetry/node'
 import {registerInstrumentations} from '@opentelemetry/instrumentation'
@@ -66,5 +66,11 @@ provider.addSpanProcessor(new BatchSpanProcessor(new JaegerExporter(options)));
 provider.register();
 
 export const tracer = opentelemetry.trace.getTracer(process.env.OTEL_SERVICE_NAME);
+
+export const addTraceId = (req, res, next) => {
+    const spanContext = getSpanContext(context.active());
+    req.traceId = spanContext && spanContext.traceId;    
+    next();
+};
 
 logger.debug("tracing initialized for %s sending span to %s", options.serviceName, options.endpoint);

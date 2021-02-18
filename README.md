@@ -58,7 +58,7 @@ Create **.env** file in root folder, refer [this](https://github.com/open-teleme
 ````
 LOG_FILE_NAME=nodejs-opentelemetry-tempo.log
 OTEL_SERVICE_NAME=nodejs-opentelemetry-tempo
-OTEL_EXPORTER_JAEGER_ENDPOINT=http://localhost:14250/api/traces
+OTEL_EXPORTER_JAEGER_ENDPOINT=http://localhost:14268/api/traces
 ````
 
 ````bash
