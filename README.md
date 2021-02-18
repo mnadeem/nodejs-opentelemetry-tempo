@@ -89,6 +89,15 @@ npm install
 npm run dev
 ````
 
+Access the endpoint
+
+![](docs/img/access-endpoint.png)
+
+Get the trace information in Jaeger
+
+![](docs/img/jaeger-tracing.png)
+
+
 # Also See
 
 * [Java Opentelemetry Tempo](https://github.com/mnadeem/boot-opentelemetry-tempo)
