@@ -33,7 +33,7 @@ Access the [endpoint](http://localhost:5555/health)
 
 ![](docs/img/access-endpoint.png)
 
-View the log and trace in grafana
+View the log and trace in [Grafana](http://localhost:3000/explore?orgId=1&left=%5B%22now-1h%22,%22now%22,%22Loki%22,%7B%22expr%22:%22%7Bjob%3D%5C%22nodejs-opentelemetry-tempo%5C%22%7D%22%7D%5D&right=%5B%22now-1h%22,%22now%22,%22Tempo%22,%7B%7D%5D)
 
 ![](docs/img/logging-tracing.png)
 
@@ -42,11 +42,11 @@ Get the trace information Using [Jaeger](http://localhost:16686/search)
 
 ![](docs/img/jaeger-tracing.png)
 
-View the metrics in prometheus
+View the metrics in [Prometheus](http://localhost:9090/graph?g0.expr=&g0.tab=1&g0.stacked=0&g0.range_input=1h)
 
 ![](docs/img/prometheus-metrics.png)
 
-View prometheus metrics in Grafana
+View prometheus metrics in [Grafana](http://localhost:3000/explore?orgId=1&left=%5B%22now-1h%22,%22now%22,%22Prometheus%22,%7B%7D%5D)
 
 ![](docs/img/grafana-prometheus.png)
 
