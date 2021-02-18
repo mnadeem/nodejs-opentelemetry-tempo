@@ -38,11 +38,11 @@ app.get('/health', (req, res) => {
 
 const doSomeWorkInNewSpan = (parentSpan) => {
 
-    const ctx = setSpan(context.active(), parentSpan);
+    //const ctx = setSpan(context.active(), parentSpan);
     //const childSpan = tracer.startSpan('doWork', undefined, ctx);
     const childSpan = tracer.startSpan('doSomeWorkInNewSpan', {
-        parentSpan, attributes: { 'code.function' : 'doSomeWorkInNewSpan' }
-    }, ctx);
+        attributes: { 'code.function' : 'doSomeWorkInNewSpan' }
+    }, context.active());
 
     childSpan.setAttribute('code.filepath', "test");
     doSomeHeavyWork();
@@ -52,16 +52,24 @@ const doSomeWorkInNewSpan = (parentSpan) => {
 
 const doSomeWorkInNewNestedSpan = (parentSpan) => {
 
-    const ctx = setSpan(context.active(), parentSpan);
-   
+    const ctx = setSpan(context.active(), parentSpan);   
     const childSpan = tracer.startSpan('doSomeWorkInNewNestedSpan', {
-        parentSpan, attributes: { 'code.function' : 'doSomeWorkInNewNestedSpan' }
+        attributes: { 'code.function' : 'doSomeWorkInNewNestedSpan' }
     }, ctx);
 
     childSpan.setAttribute('code.filepath', "test2");
     //Do some work
     doSomeHeavyWork();
+    doSomeWorkInNewNested2Span(childSpan);
     childSpan.end();
+}
+
+const doSomeWorkInNewNested2Span = (parentSpan) => {
+    const childSpan = tracer.startSpan('doSomeWorkInNewNested2Span');
+    context.with(setSpan(context.active(), parentSpan), () => {
+        logger.info('Client traceId %s:%s', childSpan.context().traceId, childSpan.context().spanId);
+        childSpan.end();
+    });
 }
 
 const doSomeHeavyWork = () => {
