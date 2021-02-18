@@ -60,16 +60,16 @@ const doSomeWorkInNewNestedSpan = (parentSpan) => {
     childSpan.setAttribute('code.filepath', "test2");
     //Do some work
     doSomeHeavyWork();
-    doSomeWorkInNewNested2Span(childSpan);
+    context.with(setSpan(context.active(), childSpan), doSomeWorkInNewNested2Span);
     childSpan.end();
 }
 
-const doSomeWorkInNewNested2Span = (parentSpan) => {
+const doSomeWorkInNewNested2Span = () => {
     const childSpan = tracer.startSpan('doSomeWorkInNewNested2Span');
-    context.with(setSpan(context.active(), parentSpan), () => {
-        logger.info('Client traceId %s:%s', childSpan.context().traceId, childSpan.context().spanId);
-        childSpan.end();
-    });
+    
+    logger.info('doSomeWorkInNewNested2Span  traceId %s:%s', childSpan.context().traceId, childSpan.context().spanId);
+
+    childSpan.end();
 }
 
 const doSomeHeavyWork = () => {
