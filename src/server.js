@@ -4,7 +4,8 @@ import log4js from 'log4js';
 import {addCorsHeaders } from './cors'
 import { tracer, addTraceId} from './tracing';
 import { measureRequestDuration, registerPromMetrics } from './monitoring';
-import {context, getSpan } from '@opentelemetry/api';
+
+import { context, setSpan, getSpan } from '@opentelemetry/api';
 
 import cors from 'cors'
 import express from 'express';
@@ -36,10 +37,13 @@ app.get('/health', (req, res) => {
 });
 
 const doSomeWorkInNewSpan = (parentSpan) => {
-    
+
+    const ctx = setSpan(context.active(), parentSpan);
+    //const childSpan = tracer.startSpan('doWork', undefined, ctx);
     const childSpan = tracer.startSpan('doSomeWorkInNewSpan', {
         parentSpan, attributes: { 'code.function' : 'doSomeWorkInNewSpan' }
-    });
+    }, ctx);
+
     childSpan.setAttribute('code.filepath', "test");
     doSomeHeavyWork();
     doSomeWorkInNewNestedSpan(childSpan);
@@ -47,9 +51,13 @@ const doSomeWorkInNewSpan = (parentSpan) => {
 }
 
 const doSomeWorkInNewNestedSpan = (parentSpan) => {
+
+    const ctx = setSpan(context.active(), parentSpan);
+   
     const childSpan = tracer.startSpan('doSomeWorkInNewNestedSpan', {
         parentSpan, attributes: { 'code.function' : 'doSomeWorkInNewNestedSpan' }
-    });
+    }, ctx);
+
     childSpan.setAttribute('code.filepath', "test2");
     //Do some work
     doSomeHeavyWork();
