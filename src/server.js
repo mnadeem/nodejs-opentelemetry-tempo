@@ -7,6 +7,8 @@ import { measureRequestDuration, registerPromMetrics } from './monitoring';
 import { context, setSpan, getSpan } from '@opentelemetry/api';
 import cors from 'cors'
 import express from 'express';
+import {queryGetFlightById} from './queries';
+import sql from 'mssql';
 
 const logger = log4js.getLogger("server");
 logger.level = "trace";
@@ -21,6 +23,37 @@ app.use(cors());
 app.use(addCorsHeaders);
 app.use(addTraceId);
 app.use(measureRequestDuration);
+
+const config = {
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    server: process.env.DB_SERVER,  
+    database: process.env.DB_NAME,  
+    connectionTimeout: 3000,
+    requestTimeout: 3000,
+    options: {
+        enableArithAbort: true,
+        encrypt: true,
+    },
+    pool: {
+        max: 100,
+        min: 1, //don't close all the connections.
+        idleTimeoutMillis: 1000,
+        evictionRunIntervalMillis: 1500000
+    }
+};
+
+const pool = new sql.ConnectionPool(config, (err) => {
+    if (err) {
+        logger.error("SQL Connection Establishment ERROR: %s", err);
+    } else {
+        logger.debug('SQL Connection established...');
+    }
+});
+
+sql.on('error', err => {
+    logger.error("SQL Connection Error : %s", err);
+});
 
 // Setup server to Prometheus scrapes:
 app.get('/metrics', registerPromMetrics);
@@ -67,7 +100,10 @@ const doSomeWorkInNewNested2Span = () => {
     logger.info('doSomeWorkInNewNested2Span  traceId %s:%s', childSpan.context().traceId, childSpan.context().spanId);
 
     Promise.all([asyncWorkOne(childSpan), asyncWorkTwo(childSpan)])
-            .then(results => logger.trace(results)); 
+            .then(results => logger.trace(results))
+            .catchh(err => {
+                logger.error(err);
+            }); 
 
     childSpan.end();
 }
@@ -111,9 +147,15 @@ function asyncWorkTwo(parentSpan) {
 }
 
 const doSomeHeavyWork = () => {
-    for (let i = 0; i <= Math.floor(Math.random() * 40000000); i += 1) {
-        // empty
-    }
+    const request = new sql.Request(pool);
+
+    let query = queryGetFlightById(1);
+
+    request.query(query).then((result) => {
+        logger.info(result.recordset);
+    }).catch(err => {
+        logger.error(err);
+    });
 }
 
 app.listen(PORT, () => {
