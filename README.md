@@ -98,6 +98,14 @@ Get the trace information in [Jaeger](http://localhost:16686/search)
 
 ![](docs/img/jaeger-tracing.png)
 
+# Connecting To MSSQL DB
+
+Lets connect to MSSQL DB running on container from Windows machine
+
+![](docs/img/connection-mssql.png)
+
+![](docs/img/mssal-connected.png)
+
 
 # Also See
 
