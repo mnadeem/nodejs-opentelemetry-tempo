@@ -1,7 +1,7 @@
 version: "3.8"
 
 services:
-  mssql:
+  ms-db-server:
     image: mcr.microsoft.com/mssql/server
     environment: 
       - SA_PASSWORD=P@ssw0rd
@@ -37,13 +37,13 @@ services:
 
   flyway:
     image: flyway/flyway
-    command: -c 'sleep 30; flyway migrate -user=sa -password=$${SA_PASSWORD} -url="jdbc:sqlserver://mssql:1433;databaseName=$${DATABASE}"'
+    command: -c 'sleep 30; flyway migrate -user=sa -password=$${SA_PASSWORD} -url="jdbc:sqlserver://ms-db-server:1433;databaseName=$${DATABASE}"'
     entrypoint: sh
     environment:
       SA_PASSWORD: P@ssw0rd
       DATABASE: OtelTempo
     depends_on:
-      - mssql
+      - ms-db-server
 
   tempo:
     image: grafana/tempo:latest
@@ -93,13 +93,13 @@ services:
       - LOG_FILE_NAME=/app/logs/nodejs-opentelemetry-tempo.log
       - DB_USER=sa
       - DB_PASS=P@ssw0rd
-      - DB_SERVER=mssql
+      - DB_SERVER=ms-db-server
       - DB_NAME=OtelTempo
     volumes:
       - ./data/logs:/app/logs
     depends_on:
       - tempo-query
-      - mssql
+      - ms-db-server
 
   promtail:
     image: grafana/promtail:master-ee9c629

@@ -1,8 +1,0 @@
-2021-02-18T08:43:07.642 DESKTOP-9AES3TT : (2244) DEBUG cors - Cors initialized 
-2021-02-18T08:43:09.301 DESKTOP-9AES3TT : (2244) DEBUG tracing - tracing initialized for nodejs-opentelemetry-tempo sending span to http://localhost:14268/api/traces 
-2021-02-18T08:43:09.651 DESKTOP-9AES3TT : (2244) DEBUG monitoring - Monitoring initialized 
-2021-02-18T08:43:11.257 DESKTOP-9AES3TT : (2244) DEBUG server - Server initialized 
-2021-02-18T08:43:11.261 DESKTOP-9AES3TT : (2244) DEBUG server - App is listening for requests on port 5555 
-2021-02-18T08:43:19.876 DESKTOP-9AES3TT : (2244) DEBUG server - ::1 - traceId: 2a724acc227b46a5cd48c98ad939906c - "GET /health HTTP/1.1" 200 28 "" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.182 Safari/537.36" 
-2021-02-18T08:43:19.912 DESKTOP-9AES3TT : (2244) DEBUG server - ::1 - traceId: aa9ccc3df6facba924ee9ef1cc748a3c - "GET /favicon.ico HTTP/1.1" 404 150 "http://localhost:5555/health" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.182 Safari/537.36" 
-2021-02-18T08:43:57.976 DESKTOP-9AES3TT : (2244) DEBUG server - ::1 - traceId: eba2866794b7c1c3c98f5f6d3f646ac4 - "GET /health HTTP/1.1" 304 - "" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.182 Safari/537.36" 

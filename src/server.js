@@ -7,8 +7,7 @@ import { measureRequestDuration, registerPromMetrics } from './monitoring';
 import { context, setSpan, getSpan } from '@opentelemetry/api';
 import cors from 'cors'
 import express from 'express';
-import {queryGetFlightById} from './queries';
-import sql from 'mssql';
+import {getFlightById} from './dao';
 
 const logger = log4js.getLogger("server");
 logger.level = "trace";
@@ -23,37 +22,6 @@ app.use(cors());
 app.use(addCorsHeaders);
 app.use(addTraceId);
 app.use(measureRequestDuration);
-
-const config = {
-    user: process.env.DB_USER,
-    password: process.env.DB_PASS,
-    server: process.env.DB_SERVER,  
-    database: process.env.DB_NAME,  
-    connectionTimeout: 3000,
-    requestTimeout: 3000,
-    options: {
-        enableArithAbort: true,
-        encrypt: true,
-    },
-    pool: {
-        max: 100,
-        min: 1, //don't close all the connections.
-        idleTimeoutMillis: 1000,
-        evictionRunIntervalMillis: 1500000
-    }
-};
-
-const pool = new sql.ConnectionPool(config, (err) => {
-    if (err) {
-        logger.error("SQL Connection Establishment ERROR: %s", err);
-    } else {
-        logger.debug('SQL Connection established...');
-    }
-});
-
-sql.on('error', err => {
-    logger.error("SQL Connection Error : %s", err);
-});
 
 // Setup server to Prometheus scrapes:
 app.get('/metrics', registerPromMetrics);
@@ -75,7 +43,7 @@ const doSomeWorkInNewSpan = (parentSpan) => {
     }, context.active());
 
     childSpan.setAttribute('code.filepath', "test");
-    doSomeHeavyWork();
+    doSomeHeavyWork(1);
     doSomeWorkInNewNestedSpan(childSpan);
     childSpan.end();
 }
@@ -89,7 +57,7 @@ const doSomeWorkInNewNestedSpan = (parentSpan) => {
 
     childSpan.setAttribute('code.filepath', "test2");
     //Do some work
-    doSomeHeavyWork();
+    doSomeHeavyWork(1);
     context.with(setSpan(context.active(), childSpan), doSomeWorkInNewNested2Span);
     childSpan.end();
 }
@@ -116,7 +84,7 @@ function asyncWorkOne(parentSpan) {
 
     let promise = new Promise((resolve, reject) => {
         try {
-            doSomeHeavyWork();
+            doSomeHeavyWork(1);
             resolve("promise 1 done!")
             childSpan.end();
         } catch (e) {
@@ -135,7 +103,7 @@ function asyncWorkTwo(parentSpan) {
 
     let promise = new Promise((resolve, reject) => {
         try {
-            doSomeHeavyWork();
+            doSomeHeavyWork(2);
             resolve("promise 2 done!");
             childSpan.end();
         } catch (e) {
@@ -146,16 +114,8 @@ function asyncWorkTwo(parentSpan) {
     return promise;
 }
 
-const doSomeHeavyWork = () => {
-    const request = new sql.Request(pool);
-
-    let query = queryGetFlightById(1);
-
-    request.query(query).then((result) => {
-        logger.info(result.recordset);
-    }).catch(err => {
-        logger.error(err);
-    });
+const doSomeHeavyWork = (flightId) => {
+    getFlightById(flightId);
 }
 
 app.listen(PORT, () => {
