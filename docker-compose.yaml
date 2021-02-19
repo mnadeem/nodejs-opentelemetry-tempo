@@ -75,6 +75,7 @@ services:
 
   nodejs-otel-tempo-api:
     build: .
+    command: './wait-for.sh ms-db-server:1433 -- node ./dist/server.js'
     ports:
       - "5555:5555"
     environment:
@@ -87,6 +88,7 @@ services:
       - DB_NAME=OtelTempo
     volumes:
       - ./data/logs:/app/logs
+      - ./etc/wait-for.sh:/app/bin/wait-for.sh
     depends_on:
       - ms-db-server
       - tempo-query
