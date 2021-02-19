@@ -88,7 +88,7 @@ services:
       - DB_NAME=OtelTempo
     volumes:
       - ./data/logs:/app/logs
-      - ./etc/wait-for.sh:/app/bin/wait-for.sh
+      - ./etc/wait-for.sh:/app/bin/wait-for.sh   #https://github.com/eficode/wait-for
     depends_on:
       - ms-db-server
       - tempo-query
