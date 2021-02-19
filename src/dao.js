@@ -1,6 +1,7 @@
 import log4js from 'log4js';
 import sql from 'mssql';
 import {queryGetFlightById} from './queries';
+import { tracer } from './tracing';
 
 const logger = log4js.getLogger("dao");
 logger.level = "debug";
@@ -38,9 +39,12 @@ sql.on('error', err => {
 });
 
 export const getFlightById = (flightId) => {
-    const request = new sql.Request(pool);
+    const childSpan = tracer.startSpan('dao.getFlightById');
 
+    const request = new sql.Request(pool);
     let query = queryGetFlightById();
+
+    childSpan.setAttribute('dao.getFlightById.sql', query);
 
     request
         .input('flightId', sql.Int, flightId)
@@ -48,8 +52,9 @@ export const getFlightById = (flightId) => {
         .then((result) => {
             logger.info(result.recordset);
         }).catch(err => {
+            childSpan.recordException(err);
             logger.error(err);
-        });
+        }).finally(() => childSpan.end());
 };
 
 logger.debug("DAO initialized");
