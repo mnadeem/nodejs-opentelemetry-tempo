@@ -35,6 +35,16 @@ services:
 
         wait $$pid
 
+  flyway:
+    image: flyway/flyway
+    command: -c 'sleep 30; flyway migrate -user=sa -password=$${SA_PASSWORD} -url="jdbc:sqlserver://mssql:1433;databaseName=$${DATABASE}"'
+    entrypoint: sh
+    environment:
+      SA_PASSWORD: P@ssw0rd
+      DATABASE: OtelTempo
+    depends_on:
+      - mssql
+
   tempo:
     image: grafana/tempo:latest
     command: ["-config.file=/etc/tempo.yaml"]
