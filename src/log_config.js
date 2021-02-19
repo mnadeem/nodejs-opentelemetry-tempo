@@ -39,7 +39,8 @@ log4js.configure(
 );
 
 export const connectLogger =  (logger) => log4js.connectLogger(logger, {
-  level: 'debug',
+  level: 'auto',
+  nolog: '/metrics',
   // include the Express request ID in the logs
   format: (req, res, format) => format(`:remote-addr - traceId: ${req.traceId} - ":method :url HTTP/:http-version" :status :content-length ":referrer" ":user-agent"`)
 })
