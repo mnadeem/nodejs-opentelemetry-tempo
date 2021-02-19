@@ -35,16 +35,6 @@ services:
 
         wait $$pid
 
-  flyway:
-    image: flyway/flyway
-    command: -c 'sleep 30; flyway migrate -user=sa -password=$${SA_PASSWORD} -url="jdbc:sqlserver://ms-db-server:1433;databaseName=$${DATABASE}"'
-    entrypoint: sh
-    environment:
-      SA_PASSWORD: P@ssw0rd
-      DATABASE: OtelTempo
-    depends_on:
-      - ms-db-server
-
   tempo:
     image: grafana/tempo:latest
     command: ["-config.file=/etc/tempo.yaml"]
@@ -98,8 +88,8 @@ services:
     volumes:
       - ./data/logs:/app/logs
     depends_on:
-      - tempo-query
       - ms-db-server
+      - tempo-query
 
   promtail:
     image: grafana/promtail:master-ee9c629

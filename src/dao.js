@@ -9,12 +9,13 @@ const config = {
     user: process.env.DB_USER,
     password: process.env.DB_PASS,
     server: process.env.DB_SERVER,  
-    database: process.env.DB_NAME,  
+    database: process.env.DB_NAME,
+    port: 1433, 
     connectionTimeout: 3000,
     requestTimeout: 3000,
     options: {
         enableArithAbort: true,
-        encrypt: true,
+        encrypt: false,
     },
     pool: {
         max: 100,
@@ -50,3 +51,5 @@ export const getFlightById = (flightId) => {
             logger.error(err);
         });
 };
+
+logger.debug("DAO initialized");
