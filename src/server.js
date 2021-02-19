@@ -101,7 +101,7 @@ const doSomeWorkInNewNested2Span = () => {
 
     Promise.all([asyncWorkOne(childSpan), asyncWorkTwo(childSpan)])
             .then(results => logger.trace(results))
-            .catchh(err => {
+            .catch(err => {
                 logger.error(err);
             }); 
 
