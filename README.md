@@ -106,6 +106,7 @@ Lets connect to MSSQL DB running on container from Windows machine
 
 ![](docs/img/mssal-connected.png)
 
+**Note** :  I have use [heidisql](https://www.heidisql.com/), other option would be [dbeaver](https://dbeaver.io/download/)
 
 # Also See
 
