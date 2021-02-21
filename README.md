@@ -60,6 +60,10 @@ Create **.env** file in root folder, refer [this](https://github.com/open-teleme
 LOG_FILE_NAME=nodejs-opentelemetry-tempo.log
 OTEL_SERVICE_NAME=nodejs-opentelemetry-tempo
 OTEL_EXPORTER_JAEGER_ENDPOINT=http://localhost:14268/api/traces
+DB_USER=sa
+DB_PASS=P@ssw0rd
+DB_SERVER=otmssql
+DB_NAME=OtelTempo
 ````
 
 Create Network
@@ -87,6 +91,8 @@ Start mssql
 ````
 docker run  -p 1433:1433 -d -e ACCEPT_EULA=Y --name otmssql -e SA_PASSWORD=P@ssw0rd --network docker-tempo mcr.microsoft.com/mssql/server
 ````
+
+Connect to mssql and create db `OtelTempo` and table as in `.data\db\mssql\scripts`
 
 ````bash
 npm install
