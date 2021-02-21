@@ -20,6 +20,11 @@ const provider = new NodeTracerProvider ({
             enabled: true,
             path: '@opentelemetry/plugin-http',
         },
+        'aws-sdk': {
+            enabled: true,
+            // You may use a package name or absolute path to the file.
+            path: "opentelemetry-plugin-aws-sdk",
+        },
     },
     logLevel: LogLevel.ERROR,      
 });
