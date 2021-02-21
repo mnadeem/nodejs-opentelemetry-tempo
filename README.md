@@ -82,6 +82,12 @@ Start tempo query
 docker run -d --rm -p 16686:16686 --name tempo-query -v ${ABSOLUTE_PATH_OF_PROJECT}\etc\tempo-query.yaml:/etc/tempo-query.yaml  --network docker-tempo  grafana/tempo-query:latest  --grpc-storage-plugin.configuration-file=/etc/tempo-query.yaml
 ````
 
+Start mssql
+
+````
+docker run  -p 1433:1433 -d -e ACCEPT_EULA=Y --name otmssql -e SA_PASSWORD=P@ssw0rd --network docker-tempo mcr.microsoft.com/mssql/server
+````
+
 ````bash
 npm install
 ````
