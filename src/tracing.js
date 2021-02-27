@@ -1,6 +1,5 @@
 import log4js from 'log4js';
 import opentelemetry, { context, getSpan, getSpanContext } from '@opentelemetry/api';
-import {LogLevel} from '@opentelemetry/core'
 import {NodeTracerProvider} from '@opentelemetry/node'
 import {registerInstrumentations} from '@opentelemetry/instrumentation'
 import {JaegerExporter} from '@opentelemetry/exporter-jaeger'
@@ -31,7 +30,6 @@ const provider = new NodeTracerProvider ({
             path: "opentelemetry-plugin-mssql",
         },
     },
-    logLevel: LogLevel.ERROR,      
 });
 
 registerInstrumentations({
