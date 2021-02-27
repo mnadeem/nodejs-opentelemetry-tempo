@@ -25,6 +25,11 @@ const provider = new NodeTracerProvider ({
             // You may use a package name or absolute path to the file.
             path: "opentelemetry-plugin-aws-sdk",
         },
+        mssql: {
+            enabled: true,
+            // You may use a package name or absolute path to the file.
+            path: "opentelemetry-plugin-mssql",
+        },
     },
     logLevel: LogLevel.ERROR,      
 });

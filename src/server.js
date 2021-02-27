@@ -43,7 +43,6 @@ const doSomeWorkInNewSpan = (parentSpan) => {
     }, context.active());
 
     childSpan.setAttribute('code.filepath', "test");
-    doSomeHeavyWork(1);
     doSomeWorkInNewNestedSpan(childSpan);
     childSpan.end();
 }
@@ -56,8 +55,6 @@ const doSomeWorkInNewNestedSpan = (parentSpan) => {
     }, ctx);
 
     childSpan.setAttribute('code.filepath', "test2");
-    //Do some work
-    doSomeHeavyWork(1);
     context.with(setSpan(context.active(), childSpan), doSomeWorkInNewNested2Span);
     childSpan.end();
 }
@@ -71,24 +68,25 @@ const doSomeWorkInNewNested2Span = () => {
             .then(results => logger.trace(results))
             .catch(err => {
                 logger.error(err);
-            }); 
-
-    childSpan.end();
+            }).finally(() => {
+                childSpan.end();
+            });    
 }
 
-function asyncWorkOne(parentSpan) {
-    const ctx = setSpan(context.active(), parentSpan);   
-    const childSpan = tracer.startSpan('asyncWorkOne', {
-        attributes: { 'code.function' : 'asyncWorkOne' }
-    }, ctx);
+function asyncWorkOne(parentSpan) {    
 
     let promise = new Promise((resolve, reject) => {
         try {
+            
+            const ctx = setSpan(context.active(), parentSpan);   
+            const childSpan = tracer.startSpan('asyncWorkOne', {
+                attributes: { 'code.function' : 'asyncWorkOne' }
+            }, ctx);
             doSomeHeavyWork(1);
             resolve("promise 1 done!")
-            childSpan.end();
         } catch (e) {
             reject(e);
+        } finally {
             childSpan.end();
         }
     });
@@ -96,18 +94,19 @@ function asyncWorkOne(parentSpan) {
 }
 
 function asyncWorkTwo(parentSpan) {
-    const ctx = setSpan(context.active(), parentSpan);   
-    const childSpan = tracer.startSpan('asyncWorkTwo', {
-        attributes: { 'code.function' : 'asyncWorkTwo' }
-    }, ctx);
 
     let promise = new Promise((resolve, reject) => {
         try {
+            const ctx = setSpan(context.active(), parentSpan);   
+            const childSpan = tracer.startSpan('asyncWorkTwo', {
+                attributes: { 'code.function' : 'asyncWorkTwo' }
+            }, context.active());
             doSomeHeavyWork(2);
             resolve("promise 2 done!");
-            childSpan.end();
         } catch (e) {
             reject(e);
+            
+        } finally {
             childSpan.end();
         }
     });

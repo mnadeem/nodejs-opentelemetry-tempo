@@ -39,22 +39,20 @@ sql.on('error', err => {
 });
 
 export const getFlightById = (flightId) => {
-    const childSpan = tracer.startSpan('dao.getFlightById');
 
     const request = new sql.Request(pool);
     let query = queryGetFlightById();
 
-    childSpan.setAttribute('dao.getFlightById.sql', query);
-
     request
         .input('flightId', sql.Int, flightId)
+        .input('appId', sql.Int, flightId)
         .query(query)
         .then((result) => {
             logger.info(result.recordset);
         }).catch(err => {
-            childSpan.recordException(err);
+            //childSpan.recordException(err);
             logger.error(err);
-        }).finally(() => childSpan.end());
+        }).finally();
 };
 
 logger.debug("DAO initialized");
