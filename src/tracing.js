@@ -5,6 +5,9 @@ import {NodeTracerProvider} from '@opentelemetry/node'
 import {registerInstrumentations} from '@opentelemetry/instrumentation'
 import {JaegerExporter} from '@opentelemetry/exporter-jaeger'
 import {SimpleSpanProcessor, BatchSpanProcessor, ConsoleSpanExporter} from '@opentelemetry/tracing'
+import { ExpressInstrumentation } from '@aspecto/opentelemetry-instrumentation-express'
+import { HttpInstrumentation } from '@opentelemetry/instrumentation-http'
+import { AwsInstrumentation } from 'opentelemetry-instrumentation-aws-sdk'
 
 const logger = log4js.getLogger("tracing");
 logger.level = "debug";
@@ -13,15 +16,15 @@ logger.level = "debug";
 const provider = new NodeTracerProvider ({
     plugins: {
         express: {
-          enabled: true,
+          enabled: false,
           path: '@opentelemetry/plugin-express',
         },
         http: {
-            enabled: true,
+            enabled: false,
             path: '@opentelemetry/plugin-http',
         },
         'aws-sdk': {
-            enabled: true,
+            enabled: false,
             // You may use a package name or absolute path to the file.
             path: "opentelemetry-plugin-aws-sdk",
         },
@@ -35,7 +38,14 @@ const provider = new NodeTracerProvider ({
 });
 
 registerInstrumentations({
-    tracerProvider: provider
+    tracerProvider: provider,
+    instrumentations: [
+        new ExpressInstrumentation(),
+        new HttpInstrumentation(),
+        new AwsInstrumentation({
+            // see under for available configuration
+        })
+    ]
 });
 
 // Initialize the exporter. 
