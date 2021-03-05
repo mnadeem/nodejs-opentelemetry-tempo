@@ -1,6 +1,5 @@
 import log4js from 'log4js';
 import opentelemetry, { context, getSpan, getSpanContext } from '@opentelemetry/api';
-import {LogLevel} from '@opentelemetry/core'
 import {NodeTracerProvider} from '@opentelemetry/node'
 import {registerInstrumentations} from '@opentelemetry/instrumentation'
 import {JaegerExporter} from '@opentelemetry/exporter-jaeger'
@@ -13,7 +12,7 @@ const logger = log4js.getLogger("tracing");
 logger.level = "debug";
 
 // Enable OpenTelemetry exporters to export traces to Grafan Tempo.
-const provider = new NodeTracerProvider ({
+const tracerProvider = new NodeTracerProvider ({
     plugins: {
         express: {
           enabled: false,
@@ -33,12 +32,11 @@ const provider = new NodeTracerProvider ({
             // You may use a package name or absolute path to the file.
             path: "opentelemetry-plugin-mssql",
         },
-    },
-    logLevel: LogLevel.ERROR,      
+    }      
 });
 
 registerInstrumentations({
-    tracerProvider: provider,
+    tracerProvider: tracerProvider,
     instrumentations: [
         new ExpressInstrumentation(),
         new HttpInstrumentation(),
@@ -68,8 +66,8 @@ const options = {
  * immediately when they end. For most production use cases,
  * OpenTelemetry recommends use of the BatchSpanProcessor.
  */
-provider.addSpanProcessor(new BatchSpanProcessor(new JaegerExporter(options)));
-//provider.addSpanProcessor(new SimpleSpanProcessor(new ConsoleSpanExporter()));
+tracerProvider.addSpanProcessor(new BatchSpanProcessor(new JaegerExporter(options)));
+//tracerProvider.addSpanProcessor(new SimpleSpanProcessor(new ConsoleSpanExporter()));
 
 /**
  * Registering the provider with the API allows it to be discovered
@@ -83,7 +81,7 @@ provider.addSpanProcessor(new BatchSpanProcessor(new JaegerExporter(options)));
  * customizing this behavior, see API Registration Options below.
  */
 // Initialize the OpenTelemetry APIs to use the NodeTracerProvider bindings
-provider.register();
+tracerProvider.register();
 
 export const tracer = opentelemetry.trace.getTracer(process.env.OTEL_SERVICE_NAME);
 
