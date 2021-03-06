@@ -12,6 +12,7 @@ const logger = log4js.getLogger("tracing");
 logger.level = "debug";
 
 // Enable OpenTelemetry exporters to export traces to Grafan Tempo.
+
 const tracerProvider = new NodeTracerProvider ();
 
 registerInstrumentations({
