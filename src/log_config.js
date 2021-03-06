@@ -40,7 +40,7 @@ log4js.configure(
 
 export const connectLogger =  (logger) => log4js.connectLogger(logger, {
   level: 'auto',
-  nolog: '/metrics',
+  nolog: ['/metrics', '/favicon.ico'],
   // include the Express request ID in the logs
   format: (req, res, format) => format(`:remote-addr - traceId: ${req.traceId} - ":method :url HTTP/:http-version" :status :content-length ":referrer" ":user-agent"`)
 })

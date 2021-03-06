@@ -4,36 +4,33 @@ import {NodeTracerProvider} from '@opentelemetry/node'
 import {registerInstrumentations} from '@opentelemetry/instrumentation'
 import {JaegerExporter} from '@opentelemetry/exporter-jaeger'
 import {SimpleSpanProcessor, BatchSpanProcessor, ConsoleSpanExporter} from '@opentelemetry/tracing'
+import { ExpressInstrumentation } from '@aspecto/opentelemetry-instrumentation-express'
+import { HttpInstrumentation } from '@opentelemetry/instrumentation-http'
+import { AwsInstrumentation } from 'opentelemetry-instrumentation-aws-sdk'
 
 const logger = log4js.getLogger("tracing");
 logger.level = "debug";
 
 // Enable OpenTelemetry exporters to export traces to Grafan Tempo.
-const provider = new NodeTracerProvider ({
-    plugins: {
-        express: {
-          enabled: true,
-          path: '@opentelemetry/plugin-express',
-        },
-        http: {
-            enabled: true,
-            path: '@opentelemetry/plugin-http',
-        },
-        'aws-sdk': {
-            enabled: true,
-            // You may use a package name or absolute path to the file.
-            path: "opentelemetry-plugin-aws-sdk",
-        },
-        mssql: {
-            enabled: true,
-            // You may use a package name or absolute path to the file.
-            path: "opentelemetry-plugin-mssql",
-        },
-    },
-});
+
+const tracerProvider = new NodeTracerProvider ();
 
 registerInstrumentations({
-    tracerProvider: provider
+    tracerProvider: tracerProvider,
+    instrumentations: [
+        new ExpressInstrumentation(),
+        new HttpInstrumentation(),
+        new AwsInstrumentation(),
+        {
+            plugins: {
+                mssql: {
+                    enabled: true,
+                    // You may use a package name or absolute path to the file.
+                    path: "opentelemetry-plugin-mssql",
+                },
+            }
+        },
+    ]
 });
 
 // Initialize the exporter. 
@@ -56,8 +53,8 @@ const options = {
  * immediately when they end. For most production use cases,
  * OpenTelemetry recommends use of the BatchSpanProcessor.
  */
-provider.addSpanProcessor(new BatchSpanProcessor(new JaegerExporter(options)));
-//provider.addSpanProcessor(new SimpleSpanProcessor(new ConsoleSpanExporter()));
+tracerProvider.addSpanProcessor(new BatchSpanProcessor(new JaegerExporter(options)));
+//tracerProvider.addSpanProcessor(new SimpleSpanProcessor(new ConsoleSpanExporter()));
 
 /**
  * Registering the provider with the API allows it to be discovered
@@ -71,7 +68,7 @@ provider.addSpanProcessor(new BatchSpanProcessor(new JaegerExporter(options)));
  * customizing this behavior, see API Registration Options below.
  */
 // Initialize the OpenTelemetry APIs to use the NodeTracerProvider bindings
-provider.register();
+tracerProvider.register();
 
 export const tracer = opentelemetry.trace.getTracer(process.env.OTEL_SERVICE_NAME);
 
