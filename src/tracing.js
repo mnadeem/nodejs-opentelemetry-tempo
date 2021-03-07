@@ -7,6 +7,7 @@ import {SimpleSpanProcessor, BatchSpanProcessor, ConsoleSpanExporter} from '@ope
 import { ExpressInstrumentation } from '@aspecto/opentelemetry-instrumentation-express'
 import { HttpInstrumentation } from '@opentelemetry/instrumentation-http'
 import { AwsInstrumentation } from 'opentelemetry-instrumentation-aws-sdk'
+import { MssqlInstrumentation } from 'opentelemetry-instrumentation-mssql'
 
 const logger = log4js.getLogger("tracing");
 logger.level = "debug";
@@ -20,15 +21,7 @@ registerInstrumentations({
         new ExpressInstrumentation(),
         new HttpInstrumentation(),
         new AwsInstrumentation(),
-        {
-            plugins: {
-                mssql: {
-                    enabled: true,
-                    // You may use a package name or absolute path to the file.
-                    path: "opentelemetry-plugin-mssql",
-                },
-            }
-        },
+        new MssqlInstrumentation(),
     ]
 });
 
