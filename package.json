@@ -32,8 +32,8 @@
     "express": "^4.17.1",
     "log4js": "^6.3.0",
     "mssql": "^6.3.1",
+    "opentelemetry-instrumentation-mssql": "0.0.1",
     "opentelemetry-plugin-aws-sdk": "^0.2.1",
-    "opentelemetry-plugin-mssql": "^0.1.0",
     "prom-client": "^13.1.0"
   },
   "devDependencies": {

@@ -5,6 +5,7 @@ import {NodeTracerProvider} from '@opentelemetry/node'
 import {registerInstrumentations} from '@opentelemetry/instrumentation'
 import {JaegerExporter} from '@opentelemetry/exporter-jaeger'
 import {SimpleSpanProcessor, BatchSpanProcessor, ConsoleSpanExporter} from '@opentelemetry/tracing'
+import { MssqlInstrumentation } from 'opentelemetry-instrumentation-mssql'
 
 const logger = log4js.getLogger("tracing");
 logger.level = "debug";
@@ -26,7 +27,7 @@ const provider = new NodeTracerProvider ({
             path: "opentelemetry-plugin-aws-sdk",
         },
         mssql: {
-            enabled: true,
+            enabled: false,
             // You may use a package name or absolute path to the file.
             path: "opentelemetry-plugin-mssql",
         },
@@ -35,7 +36,10 @@ const provider = new NodeTracerProvider ({
 });
 
 registerInstrumentations({
-    tracerProvider: provider
+    tracerProvider: provider,
+    instrumentations: [
+        new MssqlInstrumentation(),
+    ],    
 });
 
 // Initialize the exporter. 
