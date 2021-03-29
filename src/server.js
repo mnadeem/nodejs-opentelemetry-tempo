@@ -62,7 +62,7 @@ const doSomeWorkInNewNestedSpan = (parentSpan) => {
 const doSomeWorkInNewNested2Span = () => {
     const childSpan = tracer.startSpan('doSomeWorkInNewNested2Span');
 
-    logger.info('doSomeWorkInNewNested2Span  traceId %s:%s', childSpan.context().traceId, childSpan.context().spanId);
+    logger.info('doSomeWorkInNewNested2Span  traceID=%s spanID=%s', childSpan.context().traceId, childSpan.context().spanId);
 
     Promise.all([asyncWorkOne(childSpan), asyncWorkTwo(childSpan)])
             .then(results => logger.trace(results))
