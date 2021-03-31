@@ -123,6 +123,7 @@ Lets connect to MSSQL DB running on container from Windows machine
 # Also See
 
 * [Java Opentelemetry Tempo](https://github.com/mnadeem/boot-opentelemetry-tempo)
+* [opentelemetry-instrumentation-mssql](https://github.com/mnadeem/opentelemetry-instrumentation-mssql)
 
 # References
 
