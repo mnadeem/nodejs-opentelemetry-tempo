@@ -32,7 +32,7 @@
     "log4js": "^6.3.0",
     "mssql": "^6.3.1",
     "opentelemetry-instrumentation-aws-sdk": "^0.2.2",
-    "opentelemetry-instrumentation-mssql": "^0.3.0",
+    "opentelemetry-instrumentation-mssql": "^0.3.1",
     "prom-client": "^13.1.0"
   },
   "devDependencies": {
