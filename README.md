@@ -5,7 +5,7 @@ This is a project demonstrating Observability using :
 * [Prometheus](https://prometheus.io/) for monitoring and alerting
 * [Loki](https://grafana.com/oss/loki/) for Distributed Logging
 * [Tempo](https://grafana.com/oss/tempo/) for Distributed Tracing
-* [Grafan](https://grafana.com/) for visualization
+* [Grafana](https://grafana.com/) for visualization
 
 And basically integrates the following
 
